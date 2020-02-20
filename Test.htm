@@ -114,7 +114,7 @@ function showProjectInfo (pd) {
 					if (pd.targets[i].lists[k2][1].length==0) {
 						projectInfo+='[]';
 					} else {
-						projectInfo+=pd.targets[i].lists[k2][0]+'=[';
+						projectInfo+=pd.targets[i].lists[k2][0]+'=["';
 						projectInfo+=pd.targets[i].lists[k2][1].join('","');
 						projectInfo+='"]';
 					}
@@ -195,7 +195,7 @@ function showProjectInfo (pd) {
 			if (stage.lists[k2][1].length==0) {
 				projectInfo+='[]';
 			} else {
-				projectInfo+=stage.lists[k2][0]+'=[';
+				projectInfo+=stage.lists[k2][0]+'=["';
 				projectInfo+=stage.lists[k2][1].join('","');
 				projectInfo+='"]';
 			}
