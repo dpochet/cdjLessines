@@ -16,19 +16,196 @@
 var projectData;
 
 function showProjectInfo (pd) {
+
 	var i;
 	var l;
+	var i2;
+	var l2;
+	var i3;
+	var l3;
+	var k;
+	var k2;
+	var k3;
 	var projectInfo="";
-	l=projectData.extensions.length;
+	
+	l=pd.extensions.length;
 	if (l>0) { 
-		projectInfo="Project uses "+l+" extensions:<br/>";
+		projectInfo="Project uses "+l+" extensions:<ul>";
 		for (i = 0; i < l; i++) {
-		  projectInfo += "- "+projectData.extensions[i] + "<br/>";
+		  projectInfo +="<li>"+pd.extensions[i] + "</li>";
 		} 
+		projectInfo+="</ul>";
 	} else { 
 		projectInfo="Project uses no extension<br/>";
 	}
-	projectInfo+="<br/>";
+	
+	var stage;
+	l=pd.targets.length;
+	projectInfo+="Project uses "+(l-1)+" sprites:<ul>";
+	for (i = 0; i < l; i++) {
+		if (pd.targets[i].isStage==false) {
+		
+			projectInfo+="<li>"+pd.targets[i].name+"<ul>";
+			
+			// sprite is visible, draggable, at position X=120 and Y=30, layerorder=1, direction=90°, rotationstyle="all around", size=100, volume=100
+			projectInfo+='<li>sprite is <font color="seal">'+(pd.targets[i].visible ? "shown" : "hidden")+"</font>, ";
+			projectInfo+= '<font color="seal">'+(pd.targets[i].draggable ? "draggable" : "not draggable")+"</font>, ";
+			projectInfo+='at position x=<font color="seal">'+pd.targets[i].x+'</font> and y=<font color="seal">'+pd.targets[i].y+"</font>, ";
+			projectInfo+='layer order=<font color="seal">'+pd.targets[i].layerOrder+"</font>, ";
+			projectInfo+='direction=<font color="seal">'+pd.targets[i].direction+"</font>, ";
+			projectInfo+='rotation style="<font color="seal">'+pd.targets[i].rotationStyle+'</font>", ';
+			projectInfo+='size=<font color="seal">'+pd.targets[i].size+"</font>, ";
+			projectInfo+='volume=<font color="seal">'+pd.targets[i].volume+"</font>";
+			projectInfo+="</li>";
+			
+			l2=pd.targets[i].costumes.length;
+			projectInfo+="<li>sprite has "+l2+" costumes: ";
+			for (i2=0; i2<l2; i2++) {
+				if (i2>0) {	
+					projectInfo+=", ";
+				}
+				if (pd.targets[i].currentCostume==i2) {
+					projectInfo+='<font color="seal">'+pd.targets[i].costumes[i2].name+"</font>";
+				} else {
+					projectInfo+=pd.targets[i].costumes[i2].name;
+				}
+			}
+			projectInfo+="</li>";
+
+			l2=pd.targets[i].sounds.length;
+			if (l2>0) {
+				projectInfo+="<li>sprite has "+l2+" sounds: ";
+				for (i2=0; i2<l2; i2++) {
+					if (i2>0) {	
+						projectInfo+=", ";
+					}
+					projectInfo+=pd.targets[i].sounds[i2].name;
+				}
+			} else {
+				projectInfo+="<li>sprite has no sounds<br/>";			
+			}
+			projectInfo+="</li>";
+
+			l2=Object.keys(pd.targets[i].variables).length;
+			if (l2>0) {
+				projectInfo+="<li>sprite has "+l2+" local variables: ";
+				i2=0;
+				for (k2 in pd.targets[i].variables) {
+					if (i2>0) {	
+						projectInfo+=", ";
+					}
+					projectInfo+=pd.targets[i].variables[k2][0]+'="'+pd.targets[i].variables[k2][1]+'"';
+					i2++;
+				}
+				projectInfo+="</li>";
+			} else {
+				projectInfo+="<li>sprite has no local variables<br/>";			
+			}
+			projectInfo+="</li>";
+
+			l2=Object.keys(pd.targets[i].lists).length;
+			if (l2>0) {
+				projectInfo+="<li>sprite has "+l2+" local lists: ";
+				i2=0;
+				for (k2 in pd.targets[i].lists) {
+					if (i2>0) {	
+						projectInfo+=", ";
+					}
+					if (pd.targets[i].lists[k2][1].length==0) {
+						projectInfo+='[]';
+					} else {
+						projectInfo+=pd.targets[i].lists[k2][0]+'=[';
+						projectInfo+=pd.targets[i].lists[k2][1].join('","');
+						projectInfo+='"]';
+					}
+				}
+				projectInfo+="</li>";
+			} else {
+				projectInfo+="<li>sprite has no local lists</li>";			
+			}
+			projectInfo+="</ul></li><br/>";
+		} else {
+			stage=pd.targets[i];
+			console.log(stage);
+		}
+	}
+	projectInfo+="</ul>";
+
+	projectInfo+="Project stage and global variables/lists:<ul>";
+
+	l2=stage.costumes.length;
+	if (l2>0) {
+		projectInfo+="<li>stage has "+l2+" costumes: ";
+		for (i2=0;i2<l2;i2++) {
+			if (i2>0) {	
+				projectInfo+=", ";
+			}
+			if (i2==stage.currentCostume) {
+				projectInfo+='<font color="seal">'+stage.costumes[i2].name+"</font>";
+			} else {
+				projectInfo+=stage.costumes[i2].name;
+			}
+		}
+		projectInfo+="</li>";
+	} else {
+		projectInfo+="<li>stage has no costume<br/>";			
+		projectInfo+="</li>";
+	}
+	
+	l2=stage.sounds.length;
+	if (l2>0) {
+		projectInfo+="<li>stage has "+l2+" sounds: ";
+		for (i2=0;i2<l2;i2++) {
+			if (i2>0) {	
+				projectInfo+=", ";
+			}
+			projectInfo+=stage.sounds[i2].name;
+		}
+		projectInfo+="</li>";
+	} else {
+		projectInfo+="<li>stage has no sounds<br/>";			
+		projectInfo+="</li>";
+	}
+	
+	l2=Object.keys(stage.variables).length;
+	if (l2>0) {
+		projectInfo+="<li>project has "+l2+" global variables: ";
+		i2=0;
+		for (k2 in stage.variables) {
+			if (i2>0) {	
+				projectInfo+=", ";
+			}
+			projectInfo+=stage.variables[k2][0]+'="'+stage.variables[k2][1]+'"';
+			i2++;
+		}
+		projectInfo+="</li>";
+	} else {
+		projectInfo+="<li>project has no global variables<br/>";			
+		projectInfo+="</li>";
+	}
+
+	l2=Object.keys(stage.lists).length;
+	if (l2>0) {
+		projectInfo+="<li>project has "+l2+" global lists: ";
+		i2=0;
+		for (k2 in stage.lists) {
+			if (i2>0) {	
+				projectInfo+=", ";
+			}
+			if (stage.lists[k2][1].length==0) {
+				projectInfo+='[]';
+			} else {
+				projectInfo+=stage.lists[k2][0]+'=[';
+				projectInfo+=stage.lists[k2][1].join('","');
+				projectInfo+='"]';
+			}
+		}
+		projectInfo+="</li>";
+	} else {
+		projectInfo+="<li>project has no global lists</li>";			
+	}
+
+	projectInfo+="</ul>";
 	this.document.getElementById("scratchprojectinfo").innerHTML=projectInfo;
 }
 
@@ -39,8 +216,7 @@ function getJSONFile(projectnr) {
 	var projectnr=this.document.getElementById("projectnr").value;
     const url = "https://projects.scratch.mit.edu/"+projectnr;
 
-	if (false) {
-//	if (window.fetch) {
+	if (window.fetch) {
 		fetch(url)
 		 .then (response => response.json())
 		 .then(function(data) {
