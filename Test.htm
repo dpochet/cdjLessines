@@ -72,6 +72,14 @@ function showProjectInfo (pd) {
 			}
 			projectInfo+="</li>";
 
+			projectInfo+='<li style="list-style-type:none;">';
+			var imgurl;
+			for (i2=0; i2<l2; i2++) {
+				imgurl="http://assets.scratch.mit.edu/"+pd.targets[i].costumes[i2].md5ext;
+				projectInfo+='<img src="'+imgurl+'" title="'+pd.targets[i].costumes[i2].name+'" height=50 width=50 border=1 vspace=5 hspace=5/>';
+			}
+			projectInfo+="</li>";
+
 			l2=pd.targets[i].sounds.length;
 			if (l2>0) {
 				projectInfo+="<li>sprite has "+l2+" sounds: ";
@@ -152,6 +160,14 @@ function showProjectInfo (pd) {
 		projectInfo+="</li>";
 	}
 	
+	projectInfo+='<li style="list-style-type:none;">';
+	var imgurl;
+	for (i2=0; i2<l2; i2++) {
+		imgurl="http://assets.scratch.mit.edu/"+stage.costumes[i2].md5ext;
+		projectInfo+='<img src="'+imgurl+'" title="'+stage.costumes[i2].name+'" height=50 width=50 border=1 vspace=5 hspace=5/>';
+	}
+	projectInfo+="</li>";
+
 	l2=stage.sounds.length;
 	if (l2>0) {
 		projectInfo+="<li>stage has "+l2+" sounds: ";
@@ -166,6 +182,8 @@ function showProjectInfo (pd) {
 		projectInfo+="<li>stage has no sounds<br/>";			
 		projectInfo+="</li>";
 	}
+	
+	projectInfo+="<br/>";
 	
 	l2=Object.keys(stage.variables).length;
 	if (l2>0) {
